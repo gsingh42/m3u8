@@ -411,7 +411,7 @@ class Segment(BasePathMixin):
     def __init__(self, uri=None, base_uri=None, program_date_time=None, current_program_date_time=None,
                  duration=None, title=None, byterange=None, cue_out=False, cue_out_start=False,
                  cue_in=False, discontinuity=False, key=None, scte35=None, scte35_duration=None,
-                 keyobject=None, parts=None, init_section=None):
+                 keyobject=None, parts=None, init_section=None, caid=None, time_elapsed=None):
         self.uri = uri
         self.duration = duration
         self.title = title
@@ -426,6 +426,8 @@ class Segment(BasePathMixin):
         self.scte35 = scte35
         self.scte35_duration = scte35_duration
         self.key = keyobject
+        self.caid = caid
+        self.time_elapsed = time_elapsed
         self.parts = PartialSegmentList( [ PartialSegment(base_uri=self._base_uri, **partial) for partial in parts ] if parts else [] )
         if init_section is not None:
             self.init_section = InitializationSection(self._base_uri, **init_section)

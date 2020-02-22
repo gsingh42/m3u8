@@ -248,6 +248,10 @@ def _parse_ts_chunk(line, data, state):
         segment['scte35'] = state['current_cue_out_scte35']
     if state.get('current_cue_out_duration'):
         segment['scte35_duration'] = state['current_cue_out_duration']
+    if state.get('current_cue_out_caid'):
+        segment['caid'] = state['current_cue_out_caid']
+    if state.get('current_cue_out_time_elapsed'):
+        segment['time_elapsed'] = state['current_cue_out_time_elapsed']
     segment['discontinuity'] = state.pop('discontinuity', False)
     if state.get('current_key'):
         segment['key'] = state['current_key']
@@ -336,8 +340,10 @@ def _parse_simple_parameter(line, data, cast_to=str):
 
 def _parse_cueout_cont(line, state):
     param, value = line.split(':', 1)
-    res = re.match('.*Duration=(.*),SCTE35=(.*)$', value)
+    res = re.match('.*CAID=(.*),ElapsedTime=(.*),Duration=(.*),SCTE35=(.*)$', value)
     if res:
+        state['current_cue_out_caid'] = res.group(1)
+        state['current_cue_out_time_elapsed'] = res.group(2)
         state['current_cue_out_duration'] = res.group(1)
         state['current_cue_out_scte35'] = res.group(2)
 
